@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.firebase.ui.FirebaseListAdapter;
@@ -30,6 +29,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    //This is for the clear all button
     AwesomeDialogFragment dialog = new AwesomeDialogFragment(){
         @Override
         protected void positiveClick(){
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    //This is for connecting to the database
     Firebase userItemsRef;
     FirebaseListAdapter<Product> fireAdapter;
     Query queryRef;
@@ -54,20 +54,16 @@ public class MainActivity extends AppCompatActivity {
         return getMyAdapter().getItem(index);
     }
 
-    //declare elements for saving a copy of the product selected by the user
+    //This is declaring elements to save a copy of the selected item
     Product lastDeletedProduct;
     int lastDeletedPosition;
-    //method for saving a copy of the product selected
     public void saveCopy(){
-        //define the elements to be saved
 
         lastDeletedPosition = listView.getCheckedItemPosition();
-        //if the item that has to be deleted is in the list
+
         if(lastDeletedPosition != ListView.INVALID_POSITION ){
-            //get it
             lastDeletedProduct = getItem(lastDeletedPosition);
         } else {
-            //if there was no item selection, display a toast to the user
             Toast.makeText(
                     this,
                     "Please select an item to delete!", Toast.LENGTH_SHORT).show();
@@ -76,23 +72,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     ArrayAdapter<Product> adapter;
-    //ListView listView;
     ArrayList<Product> bag = new ArrayList<Product>();
 
-    /*public ArrayAdapter getMyAdapter()
-    {
-        return adapter;
-    }*/
-
-    //Product lastDeletedProduct;
-    //int lastDeletedPosition;
-    //public void saveCopy()
-    //{
-    //    lastDeletedPosition = listView.getCheckedItemPosition();
-    //    lastDeletedProduct = bag.get(lastDeletedPosition);
-    //}
-
-    //SAVING STUFF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,15 +86,14 @@ public class MainActivity extends AppCompatActivity {
             position = savedInstanceState.getInt("position");
         }
 
+        //These are the input fields
         final EditText addItem = (EditText) findViewById(R.id.addItem);
         final EditText addAmount = (EditText) findViewById(R.id.addAmount);
         final Spinner spinner = (Spinner) findViewById(R.id.unit);
 
-        //getting our listiew - you can check the ID in the xml to see that it
-        //is indeed specified as "list"
         listView = (ListView) findViewById(R.id.list);
-        //here we create a new adapter linking the bag and the
-        //listview
+
+        //We don't use the bag anymore, instead we refer to Firebase
         userItemsRef = new Firebase("https://shoppingwithstekam.firebaseio.com/products");
         fireAdapter = new FirebaseListAdapter<Product>(this, Product.class, android.R.layout.simple_list_item_checked, userItemsRef) {
             @Override
@@ -126,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         adapter =  new ArrayAdapter<Product>(this,
                 android.R.layout.simple_list_item_checked,bag );
 
-        //setting the adapter on the listview
+        //Here we set the adapter on the ListView
         listView.setAdapter(fireAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
@@ -137,8 +117,7 @@ public class MainActivity extends AppCompatActivity {
         getPreferences();
         //SharedPreferences pref = getSharedPreferences("my_prefs", MODE_PRIVATE);
 
-        //THE ADD BUTTON
-
+        //This is the add button
         Button addButton = (Button) findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,18 +137,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //save the info before it gets destroyed when the screen gets rotated
+    //Save the info before it gets destroyed when the screen gets rotated
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
-        //say what properties you want saved
-        //the name between quotes doesn't have to match the original name of the
-        // variable/whatever that is
         savedInstanceState.putInt("position", listView.getCheckedItemPosition());
     }
 
 
-    //THE REMOVE BUTTON
+    //This is the remove button
     public void removeOneItem(View removeVision){
         saveCopy();
         int index = listView.getCheckedItemPosition();
@@ -178,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             getMyAdapter().getRef(index).setValue(null);
         }
 
+        //Here we implement the snackbar
         Snackbar snackbar = Snackbar
                 .make(listView, "Item Deleted", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", new View.OnClickListener() {
@@ -198,8 +175,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    //after you exit the preferences screen, you have to update the data so it works with the
-    // other activities
+    //Here we update the data after exiting the preferences
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == 1){
@@ -208,17 +184,17 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //This is constructs the welcome message from the name we define in preferences
     public void getPreferences(){
-        //read the shared preferences
         SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
         String username = prefs.getString("username", "");
-        //welcome the user when they enter the app
         Toast.makeText(
                 this,
                 "Welcome back, " + username + "!", Toast.LENGTH_SHORT).show();
     }
 
 
+    // THIS WAS THE OLD REMOVE BUTTON WHERE WE REMOVED MULTIPLE ITEMS FROM THE BAG
     //Button removeButton = (Button) findViewById(R.id.removeButton);
     /*removeButton.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -269,26 +245,13 @@ public class MainActivity extends AppCompatActivity {
     });*/
 
 
-
-
-
-
-
-
-
-
-    /*********************************************************************
-     ** This is the dumb burger icon thing menu                         **
-     *********************************************************************/
-
+    //This is where we export the list to a message
    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    //Define convertListToString method
     public String convertListToString(){
         String result = "";
         for (int i = 0; i < fireAdapter.getCount(); i++){
@@ -298,13 +261,9 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
+    //The code for restoring the deleted items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
 
 
         switch(item.getItemId()){

@@ -35,12 +35,16 @@
                     android:layout_weight="6"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:hint="Item"
                     android:id="@+id/addItem" />
+
                 <EditText
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="number"
+                    android:hint="Amount"
                     android:id="@+id/addAmount" />
 
                 <Spinner

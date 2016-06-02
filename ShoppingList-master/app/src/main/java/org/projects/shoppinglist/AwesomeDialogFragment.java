@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 /**
  * Created by Kamal on 31/05/16.
+ * This is the clear all button
  */
 public class AwesomeDialogFragment extends DialogFragment{
 
@@ -43,7 +44,6 @@ public class AwesomeDialogFragment extends DialogFragment{
             negativeClick();
         }
     };
-
     protected void positiveClick(){};
     protected void negativeClick(){};
 

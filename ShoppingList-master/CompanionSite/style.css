@@ -1,4 +1,40 @@
+@font-face {
+font-family:websleekHeader;
+src: url(font/weblysleekuisb.ttf); }
+	
+body{
+	font-family:websleekHeader;
+	background:#eaeaea;
+	color:#424242;
+}
 .container{
-  width: 20%;
-  margin: 0 auto;
+	margin: 0 auto;
+	text-align: center;
+}
+h1{
+	margin-bottom: 50px;
+}
+form{
+	width:33%;
+	margin: 0 auto;
+
+}
+ul{
+	width:33%;
+	margin: 0 auto;
+}
+li{
+	text-align: left;
+}
+button{width:calc(33% - 6px);
+float:left;
+margin-right: 5px;
+overflow: hidden;
+color:#424242;}
+#footer{
+	position: absolute;
+	bottom: 0;
+	transform:translate(-50%,0);
+	left: 50%;
+	background:#eaeaea;
 }

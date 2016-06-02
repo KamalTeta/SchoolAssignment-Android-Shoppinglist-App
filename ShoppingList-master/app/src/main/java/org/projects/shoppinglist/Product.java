@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Created by Kamal on 12/05/16.
+ * Here we define the class for the list items
  */
 public class Product implements Parcelable {
 
@@ -45,8 +46,6 @@ public class Product implements Parcelable {
             this.unit = unit;
         }
 
-// get and set method
-
 
         @Override
         public int describeContents() {
@@ -63,27 +62,16 @@ public class Product implements Parcelable {
             dest.writeString(unit);
         }
 
-        // Creator
+
         public static final Parcelable.Creator CREATOR  = new Parcelable.Creator() {
             public Product createFromParcel(Parcel in) { return new Product(in); }
 
-            //public Product[] newArray(int size) { return new Product[size]; }
             public Object[] newArray(int size) { return new Object[0]; }
         };
 
-        // "De-parcel object
         public Product(Parcel in) {
             name = in.readString();
             quantity = in.readInt();
             unit = in.readString();
         }
-
-    //@Override
-    //public String toString(){
-    //    if (quantity == 0){
-    //        return unit + " " + name;
-    //    } else {
-    //        return quantity + " " + name;
-    //    }
-    //}
 }

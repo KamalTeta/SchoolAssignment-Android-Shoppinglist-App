@@ -6,6 +6,7 @@ import com.firebase.client.Firebase;
 
 /**
  * Created by Kamal on 31/05/16.
+ * This establishes our connection to Firebase
  */
 public class FirebaseData extends Application{
     @Override
