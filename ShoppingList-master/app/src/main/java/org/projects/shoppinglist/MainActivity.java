@@ -204,10 +204,6 @@ public class MainActivity extends AppCompatActivity {
             SparseBooleanArray multiplePositions = listView.getCheckedItemPositions();
             int largeNumber = listView.getCheckedItemPositions().size();
 
-            // MAYBE SOMETHIGN HERE??
-                *//*public void saveCopy(){
-
-                }*//*
             for (int i = 0; i < largeNumber; i++) {
                 boolean value = multiplePositions.valueAt(i);
                 int key = multiplePositions.keyAt(i);
@@ -221,31 +217,11 @@ public class MainActivity extends AppCompatActivity {
             }
             //bag.remove(position);
             //getMyAdapter().notifyDataSetChanged();
-
-            final View parent = listView;
-            Snackbar snackbar = Snackbar
-                    .make(parent, "Item Deleted", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String cool = new String("hello");
-                            String cool2 = new String("world");
-                            bag.add(new Product(cool,7,cool2));
-                            //bag.add(new Product(cool2,7,cool));
-                            getMyAdapter().notifyDataSetChanged();
-                            Snackbar snackbar = Snackbar.make(parent, "Item restored!", Snackbar.LENGTH_SHORT);
-                            snackbar.show();
-                        }
-                    });
-
-            snackbar.show();
-
-            getMyAdapter().notifyDataSetChanged();
         }
     });*/
 
 
-    //This is where we export the list to a message
+    //This is where we export the list to a string
    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -261,15 +237,17 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    //The code for restoring the deleted items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
         switch(item.getItemId()){
+            ////On click clear all
             case R.id.clear_all:
                 dialog.show(getFragmentManager(), "AwesomeDialogFragment");
                 return true;
+
+            //On click send message
             case R.id.share_list:
                 String intoTheBagOfHolding = convertListToString();
                 Intent sendIntent = new Intent();
@@ -278,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
                 return true;
+
+            //On click set name
             case R.id.action_settings:
                 setPreferences();
                 return true;
